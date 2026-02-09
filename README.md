@@ -1,4 +1,4 @@
-# 📜 Contractly - Full-Stack Contract Lifecycle Management (CLM)
+# 📜 Contractly - Contract Management Platform
 
 Contractly is an enterprise-grade MERN stack application designed to manage the end-to-end lifecycle of legal documents. It features a dynamic blueprint engine, a strictly enforced state-machine workflow, and Role-Based Access Control (RBAC).
 
@@ -79,4 +79,3 @@ To handle high volumes of contracts, the dashboard utilizes a **Tabbed Filtering
 * **Native UI Components:** Utilized browser-native date pickers to ensure maximum compatibility and accessibility without external library bloat.
 
 ---
-*Developed for the Contract Management Platform Assignment.*
