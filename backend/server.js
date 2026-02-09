@@ -125,8 +125,17 @@ app.patch('/api/contracts/:id/status', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 4. SERVER START
+// 4. DATABASE CONNECTION & SERVER START
 const PORT = process.env.PORT || 5000;
+
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => app.listen(PORT, () => console.log(`Server on ${PORT}`)))
-    .catch(err => console.log(err));
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running on port ${PORT}`);
+      console.log('✅ MongoDB connected successfully');
+    });
+  })
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1); // Stop the process if the DB fails
+  });

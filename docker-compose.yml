@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:  # This is the missing key that caused your error
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env  # Ensures MongoDB credentials are loaded
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
