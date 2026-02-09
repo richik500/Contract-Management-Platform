@@ -1,81 +1,71 @@
-# 📜 Contractly - Contract Management Platform
+# 📜 Contractly - Contract Management Platform (Full Stack)
 
-Contractly is an enterprise-grade MERN stack application designed to manage the end-to-end lifecycle of legal documents. It features a dynamic blueprint engine, a strictly enforced state-machine workflow, and Role-Based Access Control (RBAC).
+Contractly is an enterprise-grade MERN stack application designed for secure document lifecycle management. It features a dynamic blueprint engine, a strictly enforced backend state-machine, and full containerization for seamless deployment.
 
 ---
 
 ## 🏗️ Architecture & Technical Stack
 
-The platform is built on a **Decoupled Client-Server Architecture** to ensure scalability and separation of concerns:
+The platform is built on a **Decoupled Client-Server Architecture** ensuring a clear separation between business logic and the presentation layer:
 
-* **Frontend:** React (Vite) with **Tailwind CSS** for a high-fidelity, responsive "Enterprise Warm" UI.
+* **Frontend:** React (Vite) with **Tailwind CSS** for a professional, responsive interface.
 * **Backend:** Node.js & Express REST API enforcing the system's business logic and state transitions.
-* **Database:** MongoDB Atlas (NoSQL) for flexible document storage of dynamic blueprint schemas.
-* **State Management:** React Hooks for local state and Axios for asynchronous API communication.
+* **Database:** MongoDB Atlas (NoSQL) for flexible schema management of dynamic blueprints.
+* **Containerization:** Docker & Docker Compose for environment parity and simplified setup.
 
 ---
 
 ## ⚙️ Core Functional Implementation
 
-### 1. Dynamic Blueprint Engine
-Unlike static forms, Contractly allows admins to build custom templates with specific data constraints:
-* **Field Diversity:** Supports Text, Native Date (Calendar Picker), Signature, and Details fields.
-* **Single-Instance Logic:** The UI prevents duplicate field types (e.g., two 'Name' fields) to maintain data integrity.
-* **Spatial Awareness:** Each field persists its **X/Y coordinates**, allowing for future document rendering and positioning.
+### 1. Dynamic Blueprint Engine & Privacy
+* **Custom Templates:** Admins can build templates with Text, Native Date (Calendar Picker), and Details fields.
+* **Privacy-First Gallery:** The "Available Blueprints" dashboard automatically filters out and hides **Signature** fields to maintain data privacy in public views.
 
-### 2. Mandatory Compliance (Legal Guardrails)
-* **Non-Editable T&C:** The "Terms & Conditions" field uses a fixed legal string that cannot be modified by the user during creation.
-* **Validation Block:** The system blocks the saving of any blueprint that contains a T&C field unless the mandatory checkbox is explicitly ticked.
+### 2. Mandatory Compliance Guardrails
+* **MANDATORY T&C:** The system enforces a strict legal check. A blueprint cannot be saved unless the **Terms & Cond** field is included and the mandatory checkbox is explicitly ticked by the creator.
+* **Non-Editable Text:** Legal terms are fixed and non-editable to ensure consistency across all document instances.
 
 ### 3. Strict State Machine & Audit Logs
 The contract lifecycle follows a non-bypassable sequence to ensure procedural validity:
 `Created → Approved → Sent → Signed → Locked`
 
-
-
-* **Transition Guard:** The backend rejects "status jumping" (e.g., moving from Created to Signed directly).
-* **Immutability:** Once a contract is **Locked**, the API prevents any further modifications, preserving the audit trail.
-* **Audit History:** Every transition is recorded in a `history` array with timestamps and action descriptions.
-
-### 4. Role-Based Access Control (RBAC)
-The UI dynamically adapts based on the logged-in user's role:
-* **ADMIN:** Can create/delete blueprints, approve contracts, send documents, and lock final versions.
-* **SIGNER:** Has a restricted view; can only interact with contracts in the `Sent` state to provide a signature.
+* **Transition Guard:** The backend rejects "status jumping" (e.g., you cannot move from 'Created' to 'Signed' directly).
+* **Audit History:** Every transition is recorded with a timestamp and description, providing a permanent record of the document's journey.
 
 ---
 
-## 📊 Dashboard Organization
+## 🐳 Docker Support (Optional Task Completed)
 
-To handle high volumes of contracts, the dashboard utilizes a **Tabbed Filtering System**:
-* **Pending:** Contracts in the `Created` (Draft) phase.
-* **Active:** Documents currently in the pipeline (`Approved` or `Sent`).
-* **Completed:** Finalized records (`Signed` or `Locked`).
-* **Privacy Filter:** Signature fields are automatically hidden from blueprint previews to maintain data privacy.
+This project is fully containerized to eliminate "it works on my machine" issues. To run the entire stack (Frontend + Backend) with a single command:
+
+1.  Ensure you have **Docker Desktop** installed.
+2.  In the root folder, run:
+    ```bash
+    docker-compose up --build
+    ```
+3.  **Frontend:** `http://localhost:5173`
+4.  **Backend API:** `http://localhost:5000`
 
 ---
 
-## 🚀 Installation & Local Setup
-
-### Prerequisites
-* Node.js (v18+)
-* MongoDB Atlas Account
+## 🚀 Manual Installation
 
 ### 1. Backend Setup
 1.  `cd backend`
 2.  `npm install`
-3.  Create a `.env` file: `MONGO_URI=your_mongodb_connection_string`
-4.  `node server.js` (Runs on Port 5000)
+3.  Create a `.env` file: `MONGO_URI=your_mongodb_atlas_url`
+4.  `node server.js`
 
 ### 2. Frontend Setup
 1.  `cd frontend`
 2.  `npm install`
-3.  `npm run dev` (Runs on Port 5173)
+3.  `npm run dev`
 
 ---
 
-## ⚖️ Strategic Assumptions & Trade-offs
-* **Revocation over Deletion:** Contracts cannot be deleted once they enter the pipeline; they can only be `Revoked` to ensure a permanent audit record exists.
-* **Mocked Auth:** For the purpose of this technical assessment, roles are toggled via a UI switcher to demonstrate RBAC logic without the overhead of a full JWT implementation.
-* **Native UI Components:** Utilized browser-native date pickers to ensure maximum compatibility and accessibility without external library bloat.
+## ⚖️ Senior-Level Assumptions
+* **Role-Based UI:** The dashboard adapts actions based on the selected role (Admin vs. Signer) to demonstrate RBAC principles.
+* **Immutability:** Once a contract reaches the `Locked` status, all further modifications are blocked by the API.
+* **Native UI:** Used browser-native date pickers to ensure accessibility and performance without heavy external libraries.
 
 ---
